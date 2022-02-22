@@ -4,9 +4,8 @@ defmodule TextClient.Impl.Player do
   @typep tally :: Hangman.tally
   @typep state :: { game, tally }
 
-  @spec start() :: :ok
-  def start() do
-    game = Hangman.new_game()
+  @spec start(game) :: :ok
+  def start(game) do
     tally = Hangman.tally(game)
     interact( {game, tally} )
   end
@@ -25,8 +24,8 @@ defmodule TextClient.Impl.Player do
     IO.puts(feedback_for(tally))
     IO.puts("")
     IO.puts(current_word(tally))
-    Hangman.make_move(game, get_guess())
-    |> interact()
+    tally = Hangman.make_move(game, get_guess())
+    interact({game, tally})
   end
 
 
@@ -36,6 +35,7 @@ defmodule TextClient.Impl.Player do
 
   def feedback_for(_tally = %{game_state: :good_guess}),   do: "Good guess!"
   def feedback_for(_tally = %{game_state: :bad_guess}),    do: "Bad guess!"
+  def feedback_for(_tally = %{game_state: :won}),          do: "Congratulations. You won!"
   def feedback_for(_tally = %{game_state: :already_used}), do: "You already used that letter"
 
   def current_word(tally) do
