@@ -1,6 +1,4 @@
 defmodule Hangman.Type do
-  alias Hangman.Impl.Game
-  @opaque game  :: Game.t
   @type   state :: :initializing | :won | :lost | :good_guess | :bad_guess | :already_used
   @type   tally :: %{
                       turns_left: integer(),
